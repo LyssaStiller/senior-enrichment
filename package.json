@@ -2,10 +2,10 @@
   "name": "stillerAcademy",
   "version": "0.0.1",
   "description": "A review time project",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "start:dev": "webpack -w & nodemon main",
-    "start": "node main.js",
+    "start:dev": "webpack -w & nodemon main.js",
+    "start": "nodemon main.js",
     "seed": "node ./server/seed.js"
   },
   "keywords": [
@@ -22,7 +22,7 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
-    "react-router-dom": "^4.1.1",
+    "react-router-dom": "^4.2.2",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.1.0",
