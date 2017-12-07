@@ -10,7 +10,7 @@ const Students = require('./db/models').Students
           {name: "Whimsical Stylings of CSS", img: null, text: 'Learn to make stuff look cool'}
       ])
   })
-  .then(() => {
+  .then((campusesMade) => {
       return Students.bulkCreate([
           {
           firstName: "Annabel",
@@ -63,7 +63,7 @@ const Students = require('./db/models').Students
           },
       ])
   })
-  .then(() => {
+  .then((studentsMade) => {
       console.log("seed successful!")
       db.close()
   })

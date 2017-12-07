@@ -20,32 +20,38 @@ router.get("/:id", (req,res,next) => {
   .catch(next)
 })
 
+//THIS WORKS
 router.post("/", (req,res,next) => {
   Campuses.create(req.body)
   .then((createdCampus) =>{
-    res.json(createdCampus)
+    res.json({
+      message: "You created a campus",
+      campus: createdCampus})
   })
   .catch(next)
 })
 
-router.put(":/id", (req,res,next) => {
+//THIS WORKS
+router.put("/:id", (req,res,next) => {
   Campuses.findById(req.params.id)
   .then((campus) => {
     return campus.update(req.body)
   })
   .then((updatedCampus) => {
-    res.json(updatedCampus)
+    res.json({
+    message: "You updated a campus",
+    campus: updatedCampus})
   })
   .catch(next)
 })
-
-router.delete(":/id", (req,res,next) => {
+//THIS WORKS
+router.delete("/:id", (req,res,next) => {
   Campuses.findById(req.params.id)
   .then((campus) => {
     campus.destroy()
   })
   .then(() => {
-    res.send("Campus Removed")
+    res.send("Campus " + req.params.id + " Removed")
   })
   .catch(next)
 })

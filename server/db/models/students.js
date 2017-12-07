@@ -27,7 +27,7 @@ var Students = db.define('students', {
     wholeName : {
         type : Sequelize.VIRTUAL,
         get : function (){
-            return  this.getDataValue(firstName) + this.getDataValue(lastName)
+            return  this.getDataValue('firstName') + " " + this.getDataValue('lastName')
         }
     }
 })
