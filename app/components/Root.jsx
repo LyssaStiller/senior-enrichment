@@ -1,62 +1,30 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import axios from 'axios';
-import AllCampuses from './AllCampuses';
-// import AllStudents from './AllStudents';
-// import SingleStudent from './SingleStudent';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import StatefulCampuses from './StatefulCampuses';
 import SingleCampus from './SingleCampus';
 import Sidebar from './Sidebar';
+import AllStudents from './AllStudents';
+import SingleStudent from './SingleStudent';
 
 export default class Root extends Component {
- constructor(props){
-   super(props)
-   this.state = {
-     campuses: [],
-     students: [],
-     selectedStudent : {},
-     selectedCampus: {}
-   }
-   this.selectCampus = this.selectCampus.bind(this)
- }
-
- componentDidMount () {
-  axios.get('/api/campuses/')
-    .then(res => res.data)
-    .then(campuses => {
-      this.setState({ campuses })
-    });
-}
-
-selectCampus(campusId) {
-  axios.get(`/api/campuses/${campusId}`)
-    .then(res => res.data)
-    .then(campus => this.setState({
-      selectedCampus: campus
-    }));
-}
-
-
-deselectCampus () {
-  this.setState({ selectedCampus: {}});
-}
-
 
  render () {
-  console.log('!!!!', this.state)
   return (
+    <Router>
     <div id="main" className="container-fluid">
-      <div className = "col-x-2">
-      <Sidebar/>
+      <div className="col-xs-2">
+        <Sidebar />
       </div>
-      <div className = "col-x-10">
-      {
-      this.state.selectedCampus.id ?
-      <SingleCampus campus={this.state.selectedCampus}/> :
-      <AllCampuses campuses={this.state.campuses} selectCampus={this.selectCampus} />
-      }
-      </div>
-      <h1>YEAAA MOTHERFUCKERR</h1>
+        <Route exact path= "/" render={() => <Redirect to="/campuses"/>}/>
+        <Route exact path = "/campuses" component={StatefulCampuses} />
+        <Route path = '/campuses/:campusId' component={SingleCampus}/>
+        <Route exact path = '/students' component = {AllStudents} />
+        <Route path = '/students/:studentId' component = {SingleStudent}/>
     </div>
+    </Router>
    )
  }
 }
+
+
+

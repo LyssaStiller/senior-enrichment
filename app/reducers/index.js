@@ -10,3 +10,5 @@ const rootReducer = function(state = initialState, action) {
 };
 
 export default rootReducer
+
+//SEE STACKCHAT for more info on reducers
