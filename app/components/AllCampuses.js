@@ -1,30 +1,32 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
-//const AllCampuses = (props) => {
+export default class AllCampuses extends Component {
+  render () {
+    const campuses = this.props.campuses;
+    const selectCampus = this.props.selectCampus;
 
-    //const campuses = props.albums;
-  //EVERYWHERE YOU SEE ALBUMS EXPECT TO CHANGE TO CAMPUSES
-  //   return (
-  //     <div>
-  //       <h3>Campuses</h3>
-  //       <div className="row">
-  //         {
-  //           albums.map(album => (
-  //             <div className="col-xs-4" key={ album.id }>
-  //               <Link className="thumbnail" to={`/albums/${album.id}`}>
-  //                 <img src={ album.imageUrl } />
-  //                 <div className="caption">
-  //                   <h5>
-  //                     <span>{ album.name }</span>
-  //                   </h5>
-  //                   <small>{ album.songs.length } songs</small>
-  //                 </div>
-  //               </Link>
-  //             </div>
-  //           ))
-  //         }
-  //       </div>
-  //     </div>
-  //   );
-  // };
+    return (
+      <div>
+        <h3>Campuses</h3>
+        <div className="row">
+        {
+          campuses.map(campus => (
+            <div className="col-xs-4" key={campus.id }>
+              <a className="thumbnail" href="#" onClick={() => selectCampus(campus.id)}>
+                <img src={ campus.imageUrl } />
+                <div className="caption">
+                  <h5>
+                    <span>{ campus.name }</span>
+                  </h5>
+                </div>
+              </a>
+            </div>
+          ))
+        }
+        </div>
+      </div>
+    );
+  }
+}
+
