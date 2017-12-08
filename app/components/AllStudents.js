@@ -2,21 +2,36 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const AllStudents = (props)=> {
+export default class AllStudents extends Component {
 
-  const campuses = props.campuses
+  constructor(){
+    super()
+    this.state = {
+      students : []
+    }
+  }
 
+  componentDidMount(){
+    axios.get('/api/students')
+    .then(res => res.data)
+    .then(students =>
+      this.setState({students}))
+  }
+
+  render (){
+
+    const students = this.state.students
     return (
       <div>
         <h3>Students</h3>
         <div className="row">
         {
-          campuses.map(campus => (
-            <div className="col-xs-4" key={campus.id }>
-              <Link className="thumbnail" to={`/campuses/${campus.id}`}>
-                <img src={ campus.imageUrl } />
+          students.map(student => (
+            <div className="col-xs-4" key={student.id }>
+              <Link className="thumbnail" to={`/students/${student.id}`}>
+                <img src={ student.imageUrl } />
                   <h5>
-                    <span>{ campus.name }</span>
+                    <span>{student.wholeName}</span>
                   </h5>
               </Link>
             </div>
@@ -27,6 +42,6 @@ const AllStudents = (props)=> {
     );
   }
 
-  export default AllStudents;
+}
 
 

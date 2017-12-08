@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import StatefulCampuses from './StatefulCampuses';
 import SingleCampus from './SingleCampus';
 import Sidebar from './Sidebar';
+import NavBar from './NavBar';
 import AllStudents from './AllStudents';
 import SingleStudent from './SingleStudent';
 

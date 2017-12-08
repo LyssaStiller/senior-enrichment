@@ -7,9 +7,17 @@ const Sidebar = (props) => {
     <sidebar>
       <img src="http://yourbigpic.com/wp-content/uploads/2015/01/graduation_cap_cut-3.png" className="logo" />
       <section>
-        <h4 className="menu-item active">
-          <a> <h1>Welcome to Stiller Academy</h1></a>
-        </h4>
+        <h1 className="menu-item active">
+         Welcome to Stiller Academy
+        </h1>
+      </section>
+      <section>
+        <h3 className="menu-item active">
+        <Link to= '/campuses'>HOME</Link>
+        </h3>
+      </section>
+        <Link to= '/students'>All The Students</Link>
+      <section>
       </section>
     </sidebar>
   );
