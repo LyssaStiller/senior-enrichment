@@ -10,6 +10,12 @@ const AllCampuses = (props)=> {
       <div>
         <h3>Campuses</h3>
         <div className="row">
+        <form className ="form-group">
+          <input
+            className = 'form-control'
+            placeholder = "Add a campus"
+            />
+        </form>
         {
           campuses.map(campus => (
             <div className="col-xs-4" key={campus.id }>

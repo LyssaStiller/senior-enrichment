@@ -5,9 +5,9 @@ const Students = require('./db/models').Students
   db.sync({force: true})
   .then(() => {
       return Campuses.bulkCreate([
-          {name: "Data and Data Structures", img: null , text: 'Learn about data'},
-          {name: "Backend Development", img: null, text: 'Make it all connect'},
-          {name: "Whimsical Stylings of CSS", img: null, text: 'Learn to make stuff look cool'}
+          {name: "Data and Data Structures", imageUrl: null , text: 'Learn about data'},
+          {name: "Backend Development", imageUrl: null, text: 'Make it all connect'},
+          {name: "Whimsical Stylings of CSS", imageUrl: null, text: 'Learn to make stuff look cool'}
       ])
   })
   .then((campusesMade) => {

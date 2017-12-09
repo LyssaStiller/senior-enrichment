@@ -19,6 +19,9 @@ const Sidebar = (props) => {
         <Link to= '/students'>All The Students</Link>
       <section>
       </section>
+        <Link to= '/campuses'>Campuses</Link>
+      <section>
+      </section>
     </sidebar>
   );
 }
