@@ -1,38 +1,48 @@
-import React, {Component} from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import AllStudents from './AllStudents'
-import axios from 'axios'
 
+export default function SingleStudent(props){
 
-// export default class SingleStudent extends Component {
+      console.log(props)
+      const studentId = Number(this.props.match.params.studentId)
+      console.log('$$$$', studentId)
+      const students = students
+      const currentStudent = students.filter((student)=> student.id === studentId)
 
-//     constructor(props){
-//       super(props)
-//       this.state = {
-//         selectedStudent: {}
-//       }
-
-//     }
-
-  //  componentDidMount(){
-  //    const studentId = this.props.match.params.studentId
-  //    axios.get(`/api/students/${studentId}`)
-  //   .then(res => res.data)
-  //   .then(student => this.setState({selectedStudent :student}))
-  //  }
-
-  export function SingleStudent(props){
-
-   const student = this.props.selectedStudent
-    //console.log('!!!', student)
     return (
-      <div className="student">
+      <div>
         <div>
-          <img src={ student.imageUrl } className="img-thumbnail" />
           <h2>{ student.wholeName }</h2>
           <h3>GPA: {student.gpa}</h3>
           <h3>Email: {student.email}</h3>
         </div>
       </div>
-    );
-  }
+    )
+}
+
+
+
+
+// import AllStudents from './AllStudents'
+
+
+// export default class SingleStudent extends Component {
+
+//     constructor(){
+//       super()
+//       this.state = store.getState()
+
+//     }
+
+//    componentDidMount(){
+//      console.log(this.props.match.params)
+//      const studentId = this.props.match.params.studentId
+//      axios.get(`/api/students/${studentId}`)
+//     .then(res => res.data)
+//     .then(student =>
+//       {const action = getStudent(student)
+//       store.dispatch(action)
+//     })
+//   }
+
+  // this.setState({selectedStudent :student}))

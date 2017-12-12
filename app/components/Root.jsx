@@ -4,10 +4,20 @@ import StatefulCampuses from './StatefulCampuses';
 import SingleCampus from './SingleCampus';
 import Sidebar from './Sidebar';
 import NavBar from './NavBar';
-import AllStudents from './AllStudents';
-import SingleStudent from './SingleStudent';
+import StatefulStudents from './StatefulStudents';
+//import SingleStudent from './SingleStudent';
+import store, {fetchCampuses, fetchStudents} from '../store'
 
 export default class Root extends Component {
+
+  componentDidMount(){
+    const campusesThunk = fetchCampuses();
+    const studentsThunk = fetchStudents();
+    store.dispatch(campusesThunk);
+    store.dispatch(studentsThunk);
+  }
+
+
 
  render () {
   return (
@@ -16,16 +26,19 @@ export default class Root extends Component {
       <div className="col-xs-2">
         <Sidebar />
       </div>
+      <Switch>
         <Route exact path= "/" render={() => <Redirect to="/campuses"/>}/>
         <Route exact path = "/campuses" component={StatefulCampuses} />
+        <Route exact path = "/students" component={StatefulStudents} />
         <Route path = '/campuses/:campusId' component={SingleCampus}/>
-        <Route exact path = '/students' component = {AllStudents} />
-        <Route path = '/students/:studentId' component = {SingleStudent}/>
+        {/* <Route path = '/students/:studentId' component={SingleStudent}/> */}
+      </Switch>
     </div>
     </Router>
    )
  }
 }
 
-
-
+//  {/* <Route path = '/students/:studentId' component = {SingleStudent}/> */}
+//
+{/* <Route path="/students/:id" component={SingleStudent}/> */}

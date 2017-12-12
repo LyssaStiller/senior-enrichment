@@ -5,58 +5,52 @@ import store, {getCampus} from '../store'
 
 export default class SingleCampus extends Component {
 
-    constructor(){
-      super();
-      this.state = store.getState()
-    }
+constructor(){
+  super();
+  this.state = store.getState()
+}
 
-    componentDidMount(){
-      this.unsubscribe = store.subscribe(() => {
-        this.setState(store.getState())
-      })
+componentDidMount(){
+  this.unsubscribe = store.subscribe(() => {
+    this.setState(store.getState())
+  })
 
-      const campusId = this.props.match.params.campusId;
+  const campusId = this.props.match.params.campusId;
 
-      axios.get(`/api/campuses/${campusId}`)
-      .then(res => res.data)
-      .then(campus => {
-        const action = getCampus(campus)
-        store.dispatch(action)
-      });
-    }
+    axios.get(`/api/campuses/${campusId}`)
+    .then(res => res.data)
+    .then(campus => {
+      const action = getCampus(campus)
+      store.dispatch(action)
+    });
+}
 
-    componentWillUnmount(){
-      this.unsubscribe();
-    }
+componentWillUnmount(){
+  this.unsubscribe();
+}
 
-    render () {
-      console.log('!!!',this.state)
-      const campusId = this.props.match.params.campusId
-      const campus = this.state.selectedCampus;
-      //const students = this.props.students;
-      //const filteredStudents = students.filter(student => student.campusId === campusId)
+render () {
+      const campus = this.state.currentCampus;
+      const students = this.state.students;
+      const filteredStudents = students.filter(student => student.campusId === campus.id)
 
-
-
-      return (
-        <div className="campus">
-          <div>
-            <h3>{campus.name }</h3>
-            <img src={ campus.imageUrl } className="img-thumbnail" />
-          </div>
-          <div>
-            {/* <ul> {
-              filteredStudents.map(function(student){
+return (
+  <div className="campus">
+       <img src={campus.imageUrl} className="img-thumbnail" />
+              <h2>{campus.name }</h2>
+              <h4>{campus.description}</h4>
+              {
+                filteredStudents.map(function(student,i){
                 return(
-                  <li>student.wholeName</li>
+                  <Link to={`/students/${student.id}`} key={i}>
+                  <h4>{student.wholeName}</h4>
+                  </Link>
                 )
-              })
-            }
-            </ul> */}
-          </div>
-        </div>
+                })
+              }
+  </div>
       );
-    }
+  }
 }
 
 //working on incorporating state in order to include the students

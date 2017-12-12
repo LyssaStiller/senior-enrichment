@@ -1,8 +1,7 @@
+
 import React, {Component} from 'react'
-import axios from 'axios'
 import AllCampuses from './AllCampuses';
-//import SingleCampus from './SingleCampus';
-import store, {getCampuses} from '../store'
+import store from '../store'
 
 
 export default class StatefulCampuses extends Component {
@@ -15,29 +14,25 @@ componentDidMount () {
   this.unsubscribe = store.subscribe(()=> {
     this.setState(store.getState())
   })
-
-  axios.get('/api/campuses/')
-  .then(res => res.data)
-  .then(campuses => {
-    const action = getCampuses(campuses)
-    store.dispatch(action)
-  });
 }
 
 componentWillUnmount(){
   this.unsubscribe();
 }
 
-render() {
-  const campuses = this.state.campuses
+render(){
+const campuses = this.state.campuses
+const students = this.state.students
 
-    return (
+//   console.log("!!!!", students)
+  return(
     <div>
        <AllCampuses campuses={campuses} />
     </div>
     );
   }
-
 }
 
-
+ {/* <AllStudents campuses={campuses} /> */}
+ //student count per campus
+ //map box per location

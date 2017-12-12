@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 const AllCampuses = (props)=> {
 
@@ -10,12 +9,12 @@ const AllCampuses = (props)=> {
       <div>
         <h3>Campuses</h3>
         <div className="row">
-        <form className ="form-group">
+        {/* <form className ="form-group">
           <input
             className = 'form-control'
             placeholder = "Add a campus"
             />
-        </form>
+        </form> */}
         {
           campuses.map(campus => (
             <div className="col-xs-4" key={campus.id }>
@@ -27,12 +26,15 @@ const AllCampuses = (props)=> {
               </Link>
             </div>
           ))
-        }
+         }
+
         </div>
       </div>
     );
   }
 
   export default AllCampuses;
-
+//thoughts for singleCampus next time
+//if on click then trigger a filtration of all the campuses
+//how will link change
 
