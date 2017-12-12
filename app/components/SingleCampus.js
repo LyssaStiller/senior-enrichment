@@ -43,7 +43,7 @@ return (
                 filteredStudents.map(function(student,i){
                 return(
                   <Link to={`/students/${student.id}`} key={i}>
-                  <h4>{student.wholeName}</h4>
+                  <h3>{student.wholeName}</h3>
                   </Link>
                 )
                 })
@@ -52,5 +52,3 @@ return (
       );
   }
 }
-
-//working on incorporating state in order to include the students

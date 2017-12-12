@@ -8,7 +8,7 @@ var Students = require('../db/models').Students
 
 router.get("/", (req,res,next) => {
   //console.log("I am here")
-  Students.findAll({include: [{all: true}]})
+  Students.findAll()
   .then((allTheStudents) => {
     res.json(allTheStudents)
   })
@@ -16,7 +16,7 @@ router.get("/", (req,res,next) => {
 })
 
 router.get("/:id", (req,res,next) => {
-  Students.findById(req.params.id)
+  Students.findById(req.params.id, {include: [{all: true}]})
   .then((specificStudent) => {
     res.json(specificStudent)
   })

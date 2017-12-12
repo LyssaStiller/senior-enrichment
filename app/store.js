@@ -49,7 +49,7 @@ export function getCampus (campus){
 export function getStudent (student){
   return {
     type: GET_STUDENT,
-    student : student
+    student
   }
 }
 

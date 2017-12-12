@@ -5,7 +5,7 @@ import SingleCampus from './SingleCampus';
 import Sidebar from './Sidebar';
 import NavBar from './NavBar';
 import StatefulStudents from './StatefulStudents';
-//import SingleStudent from './SingleStudent';
+import SingleStudent from './SingleStudent';
 import store, {fetchCampuses, fetchStudents} from '../store'
 
 export default class Root extends Component {
@@ -31,7 +31,7 @@ export default class Root extends Component {
         <Route exact path = "/campuses" component={StatefulCampuses} />
         <Route exact path = "/students" component={StatefulStudents} />
         <Route path = '/campuses/:campusId' component={SingleCampus}/>
-        {/* <Route path = '/students/:studentId' component={SingleStudent}/> */}
+        <Route path = '/students/:studentId' component={SingleStudent}/>
       </Switch>
     </div>
     </Router>
