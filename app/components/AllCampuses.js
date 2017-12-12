@@ -34,7 +34,7 @@ const AllCampuses = (props)=> {
   }
 
   export default AllCampuses;
-//thoughts for singleCampus next time
-//if on click then trigger a filtration of all the campuses
-//how will link change
+//thoughts for getting a singleCampus next time
+//use onClick that triggers a filter fxn of all the campuses
+//how will link change?
 

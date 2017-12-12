@@ -30,7 +30,7 @@ export default class NewStudent extends Component {
     const content = newStudent;
     const { channelId } = this.props;
 
-    store.dispatch(postStudent({ name, content, channelId }));
+    store.dispatch(postStudent({ firstName, lastName, email, gpa, channelId }));
     store.dispatch(writeStudent(''));
   }
 

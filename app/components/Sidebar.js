@@ -21,6 +21,7 @@ const Sidebar = (props) => {
       </section>
         <Link to= '/campuses'>Campuses</Link>
       <section>
+        <Link to= '/new-campus'>Play God</Link>
       </section>
     </sidebar>
   );

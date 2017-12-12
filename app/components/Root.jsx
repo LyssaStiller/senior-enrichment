@@ -6,6 +6,7 @@ import Sidebar from './Sidebar';
 import NavBar from './NavBar';
 import StatefulStudents from './StatefulStudents';
 import SingleStudent from './SingleStudent';
+import NewCampus from './NewCampus';
 import store, {fetchCampuses, fetchStudents} from '../store'
 
 export default class Root extends Component {
@@ -16,8 +17,6 @@ export default class Root extends Component {
     store.dispatch(campusesThunk);
     store.dispatch(studentsThunk);
   }
-
-
 
  render () {
   return (
@@ -32,6 +31,7 @@ export default class Root extends Component {
         <Route exact path = "/students" component={StatefulStudents} />
         <Route path = '/campuses/:campusId' component={SingleCampus}/>
         <Route path = '/students/:studentId' component={SingleStudent}/>
+        <Route path = '/new-campus' component={NewCampus} />
       </Switch>
     </div>
     </Router>
