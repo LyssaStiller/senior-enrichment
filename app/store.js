@@ -11,7 +11,7 @@ const initialState = {
   currentCampus: {},
   currentStudent: {},
   newStudent: {},
-  newCampus: {}
+  newCampus: {name: "", description: ""}
 }
 
 //ACTION TYPES
@@ -20,7 +20,8 @@ const GET_CAMPUSES = 'GET_CAMPUSES'
 const GET_CAMPUS = 'GET_CAMPUS'
 const GET_STUDENT = 'GET_STUDENT'
 const WRITE_STUDENT = 'WRITE_STUDENT'
-const WRITE_CAMPUS = 'WRITE_CAMPUS'
+const WRITE_CAMPUS_NAME = 'WRITE_CAMPUS_NAME'
+const WRITE_CAMPUS_DESCRIPTION = 'WRITE_CAMPUS_DESCRIPTION'
 const REMOVE_STUDENT = 'REMOVE_STUDENT'
 const REMOVE_CAMPUS = "REMOVE_STUDENT"
 // const POST_STUDENT = "POST_STUDENT"
@@ -44,7 +45,7 @@ export function getStudents (students){
 export function getCampus (campus){
   return {
     type: GET_CAMPUS,
-    campus
+    campus: campus
   }
 }
 
@@ -62,8 +63,25 @@ export function writeStudent(content) {
 }
 
 
-export function writeCampus(content) {
-  const action = { type: WRITE_CAMPUS, newCampus: content };
+export function writeCampusName(propName, campusContent) {
+  let campus = {}
+  campus[propName] = campusContent
+  const action = {
+    type: WRITE_CAMPUS_NAME,
+    campus
+  };
+  return action;
+}
+
+
+
+export function writeCampusDescription(propName, campusContent) {
+  let campus = {}
+  campus[propName] = campusContent
+  const action = {
+    type: WRITE_CAMPUS_DESCRIPTION,
+    campus
+  };
   return action;
 }
 
@@ -77,16 +95,6 @@ export function removeCampus(campus) {
   const action = { type: REMOVE_CAMPUS, content };
   return action;
 }
-
-// export function postStudent(student) {
-//   const action = { type: POST_STUDENT, student };
-//   return action;
-// }
-
-// export function postCampus(campus) {
-//   const action = { type: POST_CAMPUS, campus};
-//   return action;
-// }
 
 
 //THUNK CREATORS
@@ -117,10 +125,10 @@ export function fetchStudents(){
 export function postCampus(campus){
 
   return function thunk(dispatch){
-    axios.post('/api/campuses', campus)
+    return axios.post('/api/campuses', campus)
     .then(res => res.data)
     .then(newCampus => {
-      const action = getCampus(newCampus)
+      const action = getCampuses(newCampus)
       dispatch(action)
     });
   }
@@ -130,7 +138,7 @@ export function postCampus(campus){
 export function postStudent(student){
 
     return function thunk(dispatch){
-      axios.post(`/api/students`, student)
+      return axios.post(`/api/students`, student)
       .then(res => res.data)
       .then(newStudent => {
         const action = getStudent(newStudent)
@@ -160,12 +168,21 @@ function reducer(state = initialState, action){
 
     case WRITE_STUDENT:
       return Object.assign({}, state, {newStudent: action.newStudent});
-    case WRITE_CAMPUS:
-      return Object.assign({}, state, {newCampus: action.newCampus});
-    case REMOVE_STUDENT :
-    return Object.assign({}, state, {students: state.students.slice(0).splice((id-1))});
-    case REMOVE_CAMPUS:
-    return Object.assign({}, state, {campuses: state.campuses.slice(0).splice((id-1))})
+    case WRITE_CAMPUS_NAME:
+      return Object.assign({}, state, {newCampus: action.campus});
+    case WRITE_CAMPUS_DESCRIPTION:
+      return Object.assign({}, state, {newCampus: action.campus});
+
+    // var newState = {...state};
+    // newState[action.field.input.name] = action.field.input;
+    // return newState
+    // ...contact,
+    // [propertyName]: event.target.value
+    //Object.assign({}, state, {newCampus: action.newCampus});
+    // case REMOVE_STUDENT :
+    // return Object.assign({}, state, {students: state.students.slice(0).splice((id-1))});
+    // case REMOVE_CAMPUS:
+    // return Object.assign({}, state, {campuses: state.campuses.slice(0).splice((id-1))})
     // case POST_STUDENT:
     // return Object.assign({}, state, {students: state.campuses.concat(action.students)});
     // case POST_CAMPUS :

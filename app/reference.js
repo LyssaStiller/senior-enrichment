@@ -1,108 +1,273 @@
 
-import React, { Component } from 'react';
-import Message from './Message';
-import NewMessageEntry from './NewMessageEntry';
-import store from '../store';
+class CommentBox extends React.Component {
 
-export default class Messages extends Component {
+    constructor() {
+      super();
 
-  constructor () {
-    super();
-    this.state = store.getState();
+      this.state = {
+        showComments: false,
+        comments: []
+      };
+    }
+
+    componentWillMount() {
+      this._fetchComments();
+    }
+
+    render() {
+      const comments = this._getComments();
+      return(
+        <div className="row comments-container">
+          <div className="cell">
+            <h2>Join The Discussion</h2>
+            <div className="comment-box">
+              <CommentForm addComment={this._addComment.bind(this)} />
+              <CommentAvatarList avatars={this._getAvatars()} />
+
+              {this._getPopularMessage(comments.length)}
+              <h3 className="comment-count">{this._getCommentsTitle(comments.length)}</h3>
+              <div className="comment-list">
+                {comments}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      );
+    }
+
+    _getAvatars() {
+      return this.state.comments.map(comment => comment.avatarUrl);
+    }
+
+    _getPopularMessage(commentCount) {
+      const POPULAR_COUNT = 10;
+      if (commentCount > POPULAR_COUNT) {
+         return (
+           <div>This post is getting really popular, dont miss out!</div>
+         );
+      }
+    }
+
+    //similar to my actions so these need take the input
+    _getComments() {
+      return this.state.comments.map((comment) => {
+        return <Comment
+                 id={comment.id}
+                 author={comment.author}
+                 body={comment.body}
+                 avatarUrl={comment.avatarUrl}
+                 onDelete={this._deleteComment.bind(this)}
+                 key={comment.id} />
+      });
+    }
+
+    _getCommentsTitle(commentCount) {
+      if (commentCount === 0) {
+        return 'No comments yet';
+      } else if (commentCount === 1) {
+        return '1 comment';
+      } else {
+        return `${commentCount} comments`;
+      }
+    }
+
+    _addComment(commentAuthor, commentBody) {
+
+      const comment = {
+        id: this.state.comments.length + 1,
+        author: commentAuthor,
+        body: commentBody,
+        avatarUrl: 'assets/images/avatars/avatar-default.png'
+      };
+
+      this.setState({
+        comments: this.state.comments.concat([comment])
+      });
+
+    }
+
+    _fetchComments() {
+      jQuery.ajax({
+        method: 'GET',
+        url: 'comments.json',
+        success: (comments) => {
+          this.setState({ comments })
+        }
+      });
+    }
+
+    _deleteComment(commentID) {
+      const comments = this.state.comments.filter(
+        comment => comment.id !== commentID
+      );
+
+      this.setState({ comments });
+    }
   }
 
-  componentDidMount () {
-    this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
+  class CommentForm extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        characters: 0
+      };
+    }
+
+    render() {
+      return (
+        <form className="comment-form" onSubmit={this._handleSubmit.bind(this)}>
+          <label>New comment</label>
+          <div className="comment-form-fields">
+            <input placeholder="Name:" ref={c => this._author = c} />
+            <textarea placeholder="Comment:" ref={c => this._body = c} onChange={this._getCharacterCount.bind(this)}></textarea>
+          </div>
+          <p>{this.state.characters} characters</p>
+          <div className="comment-form-actions">
+            <button type="submit">
+              Post comment
+            </button>
+          </div>
+        </form>
+      );
+    }
+
+    _getCharacterCount() {
+
+      this.setState({
+        characters: this._body.value.length
+      });
+
+    }
+
+    _handleSubmit(event) {
+      event.preventDefault();
+
+      this.props.addComment(this._author.value, this._body.value);
+
+      this._author.value = '';
+      this._body.value = '';
+
+      this.setState({ characters: 0  });
+    }
   }
 
-  componentWillUnmount () {
-    this.unsubscribe();
+  class CommentAvatarList extends React.Component {
+    render() {
+
+      const { avatars = [] } = this.props;
+
+      return (
+        <div className="comment-avatars">
+          <h4>Authors</h4>
+          <ul>
+            {avatars.map((avatarUrl, i) => (
+              <li key={i}>
+                <img src={avatarUrl} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
   }
 
-  render () {
+  class Comment extends React.Component {
+    constructor() {
+      super();
 
-    const channelId = Number(this.props.match.params.channelId); // because it's a string "1", not a number!
-    const messages = this.state.messages;
-    const filteredMessages = messages.filter(message => message.channelId === channelId);
+      this.state = {
+        isAbusive: false
+      };
+    }
 
-    return (
-      <div>
-        <ul className="media-list">
-          { filteredMessages.map(message => <Message message={message} key={message.id} />) }
-        </ul>
-        <NewMessageEntry channelId={channelId} />
-      </div>
+    render() {
+
+      let commentBody;
+
+      if (!this.state.isAbusive) {
+        commentBody = this.props.body;
+      } else {
+        commentBody = <em>Content marked as abusive</em>;
+      }
+
+      return(
+        <div className="comment">
+
+          <img src={this.props.avatarUrl} alt={`${this.props.author}'s picture`} />
+
+          <p className="comment-header">{this.props.author}</p>
+          <p className="comment-body">{commentBody}</p>
+
+          <div className="comment-actions">
+            <CommentRemoveConfirmation onDelete={this._handleDelete.bind(this)} />
+            <a href="#" onClick={this._toggleAbuse.bind(this)}>Report as Abuse</a>
+          </div>
+        </div>
+      );
+    }
+
+    _toggleAbuse(event) {
+      event.preventDefault();
+
+      this.setState({
+        isAbusive: !this.state.isAbusive
+      });
+    }
+
+    _handleDelete() {
+      this.props.onDelete(this.props.id);
+    }
+  }
+
+  class CommentRemoveConfirmation extends React.Component {
+    constructor() {
+      super();
+
+      this.state = {
+        showConfirm: false
+      };
+    }
+
+    render() {
+
+      let confirmNode;
+
+      if (this.state.showConfirm) {
+        return (
+          <span>
+            <a href="" onClick={this._confirmDelete.bind(this)}>Yes </a> - or - <a href="" onClick={this._toggleConfirmMessage.bind(this)}> No</a>
+          </span>
+        );
+      } else {
+        confirmNode = <a href="" onClick={this._toggleConfirmMessage.bind(this)}>Delete comment?</a>;
+      }
+
+      return (
+        <span>
+          {confirmNode}
+        </span>
+      );
+    }
+
+    _toggleConfirmMessage(e) {
+      e.preventDefault();
+
+      this.setState({
+        showConfirm: !this.state.showConfirm
+      });
+
+    }
+
+    _confirmDelete(e) {
+      e.preventDefault();
+      this.props.onDelete();
+    }
+  }
+
+  jQuery(function() {
+    ReactDOM.render(
+      <CommentBox />,
+      document.getElementById('comment-box')
     );
-  }
-}
-/////////////////dummy
-import React from 'react';
-
-export default function Message (props) {
-
-  const message = props.message;
-
-  return (
-    <li className="media">
-      <div className="media-left">
-        <a href="#">
-          <img className="media-object" src={message.author.image} alt="image" />
-        </a>
-      </div>
-      <div className="media-body">
-        <h4 className="media-heading">{ message.author.name }</h4>
-        { message.content }
-      </div>
-    </li>
-  );
-}
-
-//subroutes
-constructor () {
-  super();
-  this.state = {
-    artist: {}
-  };
-}
-
-componentDidMount () {
-  const artistId = this.props.match.params.artistId;
-  const mainPath = `/api/artists/${artistId}`;
-  const paths = [mainPath, `${mainPath}/albums`, `${mainPath}/songs`];
-  Bluebird
-    .map(paths, path => axios.get(path))
-    .map(res => res.data)
-    .spread((artist, albums, songs) => {
-      artist.albums = albums;
-      artist.songs = songs;
-      this.setState({ artist });
-    });
-}
-
-render () {
-
-  const artist = this.state.artist;
-  const albums = artist.albums || [];
-  const songs = artist.songs || [];
-
-  return (
-    <div>
-      <h3>{ artist.name }</h3>
-      <ul className="nav nav-tabs">
-        <li><Link to={`/artists/${artist.id}/albums`}>ALBUMS</Link></li>
-        <li><Link to={`/artists/${artist.id}/songs`}>SONGS</Link></li>
-      </ul>
-      <Switch>
-        <Route path={`/artists/${artist.id}/albums`} render={() => (
-          <AllAlbums albums={albums} />
-        )} />
-        <Route path={`/artists/${artist.id}/songs`} render={() => (
-          <Songs songs={songs} />
-        )} />
-      </Switch>
-    </div>
-  );
-}
-}
-
-export default SingleArtist;
+  })
