@@ -7,16 +7,9 @@ import NavBar from './NavBar';
 import StatefulStudents from './StatefulStudents';
 import SingleStudent from './SingleStudent';
 import NewCampus from './NewCampus';
-import store, {fetchCampuses, fetchStudents} from '../store'
+import axios from 'axios'
 
 export default class Root extends Component {
-
-  componentDidMount(){
-    const campusesThunk = fetchCampuses();
-    const studentsThunk = fetchStudents();
-    store.dispatch(campusesThunk);
-    store.dispatch(studentsThunk);
-  }
 
  render () {
   return (
@@ -28,10 +21,10 @@ export default class Root extends Component {
       <Switch>
         <Route exact path= "/" render={() => <Redirect to="/campuses"/>}/>
         <Route exact path = "/campuses" component={StatefulCampuses} />
-        <Route exact path = "/students" component={StatefulStudents} />
+        {/* <Route exact path = "/students" component={StatefulStudents} /> */}
         <Route path = '/campuses/:campusId' component={SingleCampus}/>
-        <Route path = '/students/:studentId' component={SingleStudent}/>
-        <Route path = '/new-campus' component={NewCampus} />
+        {/* <Route path = '/students/:studentId' component={SingleStudent}/>
+        <Route path = '/new-campus' component={NewCampus} /> */}
       </Switch>
     </div>
     </Router>

@@ -1,30 +1,26 @@
-
 import React, {Component} from 'react'
 import AllCampuses from './AllCampuses';
-import store from '../store'
 
 
 export default class StatefulCampuses extends Component {
   constructor(){
     super();
-    this.state = store.getState();
+    this.state = {
+      campuses : []
+    }
   }
 
 componentDidMount () {
-  this.unsubscribe = store.subscribe(()=> {
-    this.setState(store.getState())
+  axios.get('api/campuses')
+  .then(res => res.data)
+  .then(campuses => {
+    this.setState({campuses})
   })
 }
-
-componentWillUnmount(){
-  this.unsubscribe();
-}
-
 render(){
 const campuses = this.state.campuses
-const students = this.state.students
 
-//   console.log("!!!!", students)
+  console.log("!*!*!*!", campuses)
   return(
     <div>
        <AllCampuses campuses={campuses} />
